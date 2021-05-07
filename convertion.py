@@ -1,12 +1,7 @@
 import numpy as np
 import pandas as pd
 
-#Desafio4
-#CurrenciesClean.csv y Sales.parquet.
-# Lo que te vamos a pedir es que agregues la tasa de conversión a
-#  dólares teniendo en cuenta el día y el currencyId. 
-#  Por ejemplo, debajo encontrarás la solución de alguien 
-#  que optó por agregar como tasa de conversión la columna “dolar_to_local”.
+
 
 def creatingSalesWithRate():
     """This function open a sales.parquet file and convines it 
@@ -28,18 +23,37 @@ def creatingSalesWithRate():
     result=sales.merge(currencies,left_on=["currency_id","date"], right_on=["currency_id","date"] ,how="left")
     return result
 
+def createSalesPerIdPerLevel(dataFrame):
+    """ """
+    levels = ["level1","level2","level3","level4","level5","level6","level7"]
+    salesResult=pd.DataFrame()
+    for level in levels:
+        salesPerLevel = pd.DataFrame()
+        dataFrame.replace("", np.nan, inplace=True)
+        sales = dataFrame[dataFrame[level].notnull()]
+        salesPerLevel["level_id"] = sales[level]
+        salesPerLevel["sales"] = sales["sales"]
+        groupSalesPerLevel_id = salesPerLevel.groupby("level_id").agg({"sales":"sum"}) 
+        groupSalesPerLevel_id = groupSalesPerLevel_id.reset_index()  
+        groupSalesPerLevel_id["level"] = level 
+        salesResult = pd.concat([salesResult,groupSalesPerLevel_id])
+    return salesResult
 
+def createSalesPerLevel(dataFrame):
+    salesPerLevel = dataFrame.groupby("level").agg({"sales":"sum"})
+    salesPerLevel = salesPerLevel.reset_index()
+    return salesPerLevel 
+        
+#dataframe from challenge4
 salesWithRate = creatingSalesWithRate()
-#¿Cuántos ítems hay?
-#print(salesWithRate["item_id"].describe())
-print("Hay ", len(salesWithRate["item_id"].value_counts()), " items diferentes.")
-#2060
-amountOfSales =salesWithRate.groupby(["item_id"]).agg({"sales":"sum"})
-#¿Cuál es el ítem con más ventas? 
-print("El item con mas ventas es: \n ",amountOfSales.sort_values(ascending=False, by= "sales").head(1))
-#MPE438744458
-#print(amountOfSales.max())
-#90
+#fisrt dataframe asked for on challenge 6
+salesPerIdPerLevel = createSalesPerIdPerLevel(salesWithRate)
+print("First dataframe asked for starts with something like:")
+print(salesPerIdPerLevel.sort_values("sales",ascending=False).head())
+#second dataframe 
+salesPerLevel = createSalesPerLevel(salesPerIdPerLevel)
+print("Second dataframe asked for")
+print(salesPerLevel)
 
 
 
