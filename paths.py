@@ -14,5 +14,6 @@ def generateMonthlyPathList(year, month, day):
     return paths
 
 #printing the list as the example
+monthlyPathList = generateMonthlyPathList("2021", "05", "17")
 for i in range(17):
-    print(generateMonthlyPathList("2021", "05", "17")[i])
+    print(monthlyPathList[i])
