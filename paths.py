@@ -10,7 +10,7 @@ def generateMonthlyPathList(year, month, day):
     """ It recieves three strings, and returns a list of paths from 
     the first day of the month to the parameter day"""
     path = "https://importantdata@location/"
-    paths = [path+year+"/"+month+"/"+str(day_i)+"/" for day_i in range(1,int(day)+1) ]
+    paths = [f"{path}{year}/{month}/{str(0)+str(day_i) if (day_i<10)  else day_i}/" for day_i in range(1,int(day)+1) ]
     return paths
 
 #printing the list as the example
