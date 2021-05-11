@@ -1,0 +1,9 @@
+country_name,currency_name,currency_rate,average_tax_rate
+Australia,Australian Dollar,"2,09","10,00"
+Canada,Canadian Dollar,"1,62","8,43"
+France,EURO,"1,21","19,60"
+France,French Franc,"7,37","19,60"
+Germany,Deutsche Mark,"2,20","16,00"
+Germany,EURO,"1,21","16,00"
+United Kingdom,United Kingdom Pound,"0,73","17,50"
+United States,US Dollar,"1,00","7,41"
