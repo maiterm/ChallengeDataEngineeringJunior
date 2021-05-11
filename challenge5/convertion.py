@@ -1,12 +1,10 @@
 import numpy as np
 import pandas as pd
 
-#Desafio4
-#CurrenciesClean.csv y Sales.parquet.
-# Lo que te vamos a pedir es que agregues la tasa de conversión a
-#  dólares teniendo en cuenta el día y el currencyId. 
-#  Por ejemplo, debajo encontrarás la solución de alguien 
-#  que optó por agregar como tasa de conversión la columna “dolar_to_local”.
+#Desafio5
+# Con el dataframe resultante en el desafío anterior 
+# crear un campo llamado “row_key” el cual está compuesto 
+# de la siguiente manera: date + category_id
 
 def creatingSalesWithRate():
     """This function open a sales.parquet file and convines it 
@@ -29,15 +27,18 @@ def creatingSalesWithRate():
     return result
 
 
+
+def newRowKey(dataFrame):
+    """It creates a new column row_key that concatenates date and category_id"""
+    #The dtype are needed as string
+    dataFrame["date"] = dataFrame["date"].astype(str)
+    dataFrame["category_id"] = dataFrame["category_id"].astype(str)
+    #now they can be united 
+    dataFrame["row_key"] = dataFrame["date"] +"-"+dataFrame["category_id"]
+    return dataFrame
+
+
 salesWithRate = creatingSalesWithRate()
-#¿Cuántos ítems hay?
-#print(salesWithRate["item_id"].describe())
-print("Hay ", len(salesWithRate["item_id"].value_counts()), " items diferentes.")
-#2060
-amountOfSales =salesWithRate.groupby(["item_id"]).agg({"sales":"sum"})
-#¿Cuál es el ítem con más ventas? 
-print("El item con mas ventas es: \n ",amountOfSales.sort_values(ascending=False, by= "sales").head(1))
-#MPE438744458
-#print(amountOfSales.max())
-#90
+salesWithRowKey = newRowKey(salesWithRate)
+print(salesWithRowKey.head())
 
